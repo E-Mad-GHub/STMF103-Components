@@ -1,10 +1,10 @@
 /************************************************************************************/
 /* Description : This is an Interface file that contains the public definitions and */
-/*               public functions needed to use the UART Component in    		    */
+/*               public functions needed to use the UART2 Component in    		    */
 /* 				 high efficiency													*/
 /* 				 This Driver Supports STM32F103                                     */
 /*																					*/
-/* Created on  : May 3, 2019 														*/
+/* Created on  : May 5, 2019 														*/
 /* Author      : OMDA																*/
 /************************************************************************************/
 
@@ -19,11 +19,6 @@
 
 /******* Configurations Dependencies ************************/
 /*									        				*/
-
-/* Defining UART States	(UART_INIT_STATE)	   				*/
-#define UART_DISABLE 					0x00000000
-#define UART_ENABLE_RX					0x00002004
-#define UART_ENABLE_TX					0x00002008
 
 /* Defining Number of used data bits (UART_DATA_BITS)      	*/
 #define DATA_BITS_8						0x00000000
@@ -41,7 +36,7 @@
 
 
 /*************************************************************************************************/
-/* Description: Initialization of ADC includes initializing static variables and defining the    */
+/* Description: Initialization of UART2 includes initializing static variables and defining the  */
 /*				configurations found in the "config.h" file 							         */
 /*																				            	 */
 /* Inputs : void														 			             */
@@ -54,57 +49,98 @@ void UART_vInit( void ) ;
 /*																					             */
 /*************************************************************************************************/
 
-
-
 /*************************************************************************************************/
 /* Description: Receive while blocking the processor 			 					             */
 /*																				            	 */
 /* Inputs : void 																		         */
+/*																								 */
 /* Outputs: u8Error 						-> Error State							             */
 /*																					             */
 
-u8 UART_vReceive_Blocking( void ) ;
+u8 UART_u8ReceiveBlocking( void ) ;
 
 /*																					             */
 /*************************************************************************************************/
 
+/*************************************************************************************************/
+/* Description: Receive Asynchronously with Enabling the Interrupt 					             */
+/*																				            	 */
+/* Inputs : Copy_FrameNubmer 				-> No of frames to be Received				         */
+/*			Copy_PvoidFuncCallBack			-> Pointer to the Call back function after receiving */
+/* 	 	 	 	 	 	 	 	 	 	 	 	all the frames									 */
+/*																								 */
+/* Outputs: u8Error 						-> Error State							             */
+/*																					             */
 
+void UART_vReceiveAsynchronous( u8 Copy_FrameNubmer , void (*Copy_PvoidFuncCallBack)(void) ) ;
+
+/*																					             */
+/*************************************************************************************************/
 
 /*************************************************************************************************/
 /* Description: Transmit while blocking the processor 			 					             */
 /*																				            	 */
 /* Inputs : Copy_pDataArray					-> Data Array								         */
+/*																								 */
 /* Outputs: u8Error 						-> Error State							             */
 /*																					             */
 
-void UART_vTransmit_Blocking( u8 * Copy_pDataArray ) ;
+u8 UART_u8TransmitBlocking( u8 * Copy_pDataArray ) ;
 
 /*																					             */
 /*************************************************************************************************/
 
-
 /*************************************************************************************************/
-/* Description: Transmit while blocking the processor 			 					             */
+/* Description: Transmit Asynchronously with Enabling the Interrupt 				             */
 /*																				            	 */
-/* Inputs : Copy_pDataArray					-> Data Array								         */
+/* Inputs : Copy_pDataArray 				-> Pointer to the string to be sent			         */
+/*			Copy_PvoidFuncCallBack			-> Pointer to the Call back function after 			 */
+/* 	 	 	 	 	 	 	 	 	 	 	 	Transmitting all the frames						 */
+/*																								 */
 /* Outputs: u8Error 						-> Error State							             */
 /*																					             */
 
-void UART_vGetReceived( u8 * Copy_pData ) ;
+void UART_vTransmitAsynchronous( u8 * Copy_pDataArray , void (*Copy_PvoidFuncCallBack)(void) )  ;
 
 /*																					             */
 /*************************************************************************************************/
 
+/*************************************************************************************************/
+/* Description: Copy received frames in the given array			 					             */
+/*																				            	 */
+/* Inputs : Copy_pData						-> Data Array								         */
+/*																								 */
+/* Outputs: u8Error 						-> Error State							             */
+/*																					             */
+
+void UART_vGetReceivedAsynch( u8 * Copy_pAData ) ;
+
+/*																					             */
+/*************************************************************************************************/
+
+/*************************************************************************************************/
+/* Description: Copy received frames in the given variable		 					             */
+/*																				            	 */
+/* Inputs : Copy_pData						-> Data Array								         */
+/*																								 */
+/* Outputs: u8Error 						-> Error State							             */
+/*																					             */
+
+void UART_vGetReceivedBlocking( u8 * Copy_pData ) ;
+
+/*																					             */
+/*************************************************************************************************/
 
 /*************************************************************************************************/
 /* Description: Assigns a Fn to the pointer in the ISH								             */
 /*																				            	 */
 /* Inputs : Copy_u8IntrIndex 				-> No of Interrupt							         */
 /* 			(*Copy_PvoidFuncCallBack)(void) -> the address of the function to be used			 */
+/*																								 */
 /* Outputs: u8Error 						-> Error State							             */
 /*																					             */
 
-u8 UART_u8SetCallBack( void (*Copy_PvoidFuncCallBack)(void) ) ;
+u8 UART_u8SetCallBack( void (*Copy_PvoidFuncCallBack)(void) );
 
 /*																					             */
 /*************************************************************************************************/
